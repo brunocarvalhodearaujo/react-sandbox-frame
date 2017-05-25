@@ -1,0 +1,8 @@
+{
+  "plugins": [
+    "transform-inline-imports-commonjs"
+  ],
+  "presets": [
+    "react"
+  ]
+}

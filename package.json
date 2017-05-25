@@ -1,0 +1,26 @@
+{
+  "name": "react-sandbox-frame",
+  "version": "0.0.1",
+  "description": "react component for create isolated view frames",
+  "author": "Bruno Carvalho de Araujo <brunocarvalhodearaujo@gmail.com>",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "repository": {
+    "url": "https://github.com/brunocarvalhodearaujo/react-sandbox-frame.git",
+    "type": "git"
+  },
+  "scripts": {
+    "prepublish": "babel src --out-dir lib"
+  },
+  "dependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-plugin-transform-inline-imports-commonjs": "^1.2.0",
+    "babel-preset-react": "^6.24.1",
+    "classnames": "^2.2.5",
+    "is": "^3.2.1",
+    "lodash": "^4.17.4",
+    "prop-types": "^15.5.10",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  }
+}
