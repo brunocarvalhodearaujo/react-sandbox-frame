@@ -57,7 +57,7 @@ export default class Frame extends Component {
 
 }
 
-WebView.propTypes = {
+Frame.propTypes = {
   dangerouslySetInnerHTML: PropTypes.object,
   children: PropTypes.element,
   onLoad: PropTypes.func,
@@ -65,7 +65,7 @@ WebView.propTypes = {
   stylesheets: PropTypes.arrayOf(PropTypes.string)
 }
 
-WebView.defaultProps = {
+Frame.defaultProps = {
   title: 'webview-wrapper',
   stylesheets: [ ]
 }
