@@ -51,7 +51,7 @@ export default class Frame extends Component {
   render () {
     const { title, src, className, style } = this.props
     return (
-      <iframe {..._.pickBy({ title, src, className, style })} />
+      <iframe {..._.pickBy({ title, src, className, style: _.merge({ border: 'none' }, style) })} />
     )
   }
 
@@ -62,6 +62,7 @@ Frame.propTypes = {
   children: PropTypes.element,
   onLoad: PropTypes.func,
   src: PropTypes.string,
+  title: PropTypes.string.isRequired,
   stylesheets: PropTypes.arrayOf(PropTypes.string)
 }
 
