@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { findDOMNode } from 'react-dom'
+import { findDOMNode, unmountComponentAtNode } from 'react-dom'
 import { renderToStaticMarkup } from 'react-dom/server'
 import is from 'is'
 
@@ -15,9 +15,6 @@ export default class Frame extends Component {
       DOMNode.body.innerHTML = is.string(this.props.children)
         ? this.props.children
         : renderToStaticMarkup(this.props.children)
-    }
-    if (this.props.hasOwnProperty('onLoad') && is.function(this.props.onLoad)) {
-      this.props.onLoad(DOMNode)
     }
     const head = DOMNode.getElementsByTagName('head')[0]
     this.props.stylesheets.forEach(url => {
@@ -38,6 +35,13 @@ export default class Frame extends Component {
     })
   }
 
+  onLoad () {
+    if (this.props.hasOwnProperty('onLoad') && is.function(this.props.onLoad)) {
+      const DOMNode = (findDOMNode(this).contentDocument || findDOMNode(this).contentWindow.document)
+      this.props.onLoad(DOMNode)
+    }
+  }
+
   componentDidMount () {
     this.updateFrame()
   }
@@ -46,9 +50,13 @@ export default class Frame extends Component {
     this.updateFrame()
   }
 
+  componentWillUnmount () {
+    unmountComponentAtNode(this)
+  }
+
   render () {
     const { src, title, className } = this.props
-    return <iframe {...{ src, title, className }} />
+    return <iframe {...{ src, title, className }} onLoad={this.onLoad.bind(this)} />
   }
 
 }
