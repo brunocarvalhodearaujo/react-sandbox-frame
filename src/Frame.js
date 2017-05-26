@@ -1,44 +1,41 @@
 import React, { Component } from 'react'
-import { findDOMNode, unmountComponentAtNode } from 'react-dom'
-import { renderToStaticMarkup } from 'react-dom/server'
 import PropTypes from 'prop-types'
-import _ from 'lodash'
+import { findDOMNode } from 'react-dom'
+import { renderToStaticMarkup } from 'react-dom/server'
 import is from 'is'
 
 export default class Frame extends Component {
 
-  get document () {
-    return (findDOMNode(this).contentDocument || findDOMNode(this).contentWindow.document)
-  }
-
   updateFrame () {
-    if (this.document.readyState === 'complete') {
-      const head = this.document.getElementsByTagName('head')[ 0 ]
-      this.props.stylesheets.forEach(url => {
-        const ref = this.document.createElement('link')
+    const DOMNode = (findDOMNode(this).contentDocument || findDOMNode(this).contentWindow.document)
+    if (DOMNode.readyState !== 'complete') {
+      return
+    }
+    if (this.props.hasOwnProperty('children') && !this.props.hasOwnProperty('src')) {
+      DOMNode.body.innerHTML = is.string(this.props.children)
+        ? this.props.children
+        : renderToStaticMarkup(this.props.children)
+    }
+    if (this.props.hasOwnProperty('onLoad') && is.function(this.props.onLoad)) {
+      this.props.onLoad(DOMNode)
+    }
+    const head = DOMNode.getElementsByTagName('head')[0]
+    this.props.stylesheets.forEach(url => {
+      if (!head.querySelector(`link[href="${url}"]`)) {
+        const ref = DOMNode.createElement('link')
         ref.rel = 'stylesheet'
         ref.type = 'text/css'
         ref.href = url
         head.appendChild(ref)
-      })
-      this.props.scripts.forEach(src => {
-        const ref = this.document.createElement('script')
-        ref.src = src
-        head.appendChild(ref)
-      })
-      if (!is.undefined(this.props.dangerouslySetInnerHTML) && !is.undefined(this.props.dangerouslySetInnerHTML.__html)) {
-        this.document.body.innerHTML = this.props.dangerouslySetInnerHTML.__html
-      } else if (!is.undefined(this.props.children)) {
-        this.document.body.innerHTML = renderToStaticMarkup(this.props.children)
-      } else if (is.undefined(this.props.src)) {
-        throw new Error('prop `src`, `children` or `dangerouslySetInnerHTML` not found')
       }
-      if (this.props.hasOwnProperty('onLoad')) {
-        this.props.onLoad(this.document)
+    })
+    this.props.scripts.forEach(source => {
+      if (!head.querySelector(`script[src="${source}"]`)) {
+        const tag = DOMNode.createElement('script')
+        tag.src = source
+        head.appendChild(tag)
       }
-    } else {
-      setTimeout(this.updateFrame.bind(this), 100)
-    }
+    })
   }
 
   componentDidMount () {
@@ -49,21 +46,14 @@ export default class Frame extends Component {
     this.updateFrame()
   }
 
-  componentWillUnmount () {
-    unmountComponentAtNode(this)
-  }
-
   render () {
-    const { title, src, className, style } = this.props
-    return (
-      <iframe {..._.pickBy({ title, src, className, style: _.merge({ border: 'none' }, style) })} />
-    )
+    const { src, title, className } = this.props
+    return <iframe {...{ src, title, className }} />
   }
 
 }
 
 Frame.propTypes = {
-  dangerouslySetInnerHTML: PropTypes.object,
   children: PropTypes.element,
   onLoad: PropTypes.func,
   src: PropTypes.string,
@@ -73,7 +63,7 @@ Frame.propTypes = {
 }
 
 Frame.defaultProps = {
-  title: 'webview-wrapper',
-  stylesheets: [ ],
-  scripts: [ ]
+  title: 'frame-wrapper',
+  scripts: [],
+  stylesheets: []
 }
