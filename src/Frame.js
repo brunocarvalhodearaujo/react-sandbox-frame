@@ -6,39 +6,45 @@ import is from 'is'
 
 export default class Frame extends Component {
 
-  updateFrame () {
-    const DOMNode = (findDOMNode(this).contentDocument || findDOMNode(this).contentWindow.document)
-    if (DOMNode.readyState !== 'complete') {
-      return
-    }
-    if (this.props.hasOwnProperty('children') && !this.props.hasOwnProperty('src')) {
-      DOMNode.body.innerHTML = is.string(this.props.children)
-        ? this.props.children
-        : renderToStaticMarkup(this.props.children)
-    }
-    const head = DOMNode.getElementsByTagName('head')[0]
-    this.props.stylesheets.forEach(url => {
-      if (!head.querySelector(`link[href="${url}"]`)) {
-        const ref = DOMNode.createElement('link')
-        ref.rel = 'stylesheet'
-        ref.type = 'text/css'
-        ref.href = url
-        head.appendChild(ref)
-      }
-    })
-    this.props.scripts.forEach(source => {
-      if (!head.querySelector(`script[src="${source}"]`)) {
-        const tag = DOMNode.createElement('script')
-        tag.src = source
-        head.appendChild(tag)
-      }
-    })
+  constructor () {
+    super()
+    this.state = { isLinked: false }
   }
 
-  onLoad () {
-    if (this.props.hasOwnProperty('onLoad') && is.function(this.props.onLoad)) {
-      const DOMNode = (findDOMNode(this).contentDocument || findDOMNode(this).contentWindow.document)
-      this.props.onLoad(DOMNode)
+  /**
+   * @param {HTMLElement} DOMNode
+   */
+  updateFrame () {
+    const DOMNode = (findDOMNode(this).contentDocument || findDOMNode(this).contentWindow.document)
+    if (DOMNode.readyState === 'complete') {
+      if (this.props.hasOwnProperty('children') && !this.props.hasOwnProperty('src')) {
+        DOMNode.body.innerHTML = is.string(this.props.children)
+        ? this.props.children
+        : renderToStaticMarkup(this.props.children)
+      }
+      const head = DOMNode.getElementsByTagName('head')[0]
+      this.props.stylesheets.forEach(url => {
+        if (!head.querySelector(`link[href="${url}"]`)) {
+          const ref = DOMNode.createElement('link')
+          ref.rel = 'stylesheet'
+          ref.type = 'text/css'
+          ref.href = url
+          head.appendChild(ref)
+        }
+      })
+      this.props.scripts.forEach(source => {
+        if (!head.querySelector(`script[src="${source}"]`)) {
+          const tag = DOMNode.createElement('script')
+          tag.src = source
+          head.appendChild(tag)
+        }
+      })
+      if (!this.state.isLinked && this.props.hasOwnProperty('onLoad') && is.function(this.props.onLoad)) {
+        this.props.onLoad(DOMNode)
+        this.setState({ isLinked: !this.state.isLinked })
+      }
+    } else {
+      setTimeout(this.updateFrame.bind(this), 500)
     }
   }
 
@@ -56,7 +62,7 @@ export default class Frame extends Component {
 
   render () {
     const { src, title, className } = this.props
-    return <iframe {...{ src, title, className }} onLoad={this.onLoad.bind(this)} />
+    return <iframe {...{ src, title, className }} />
   }
 
 }
