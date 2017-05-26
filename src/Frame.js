@@ -6,15 +6,7 @@ import is from 'is'
 
 export default class Frame extends Component {
 
-  constructor () {
-    super()
-    this.state = { isLinked: false }
-  }
-
-  /**
-   * @param {HTMLElement} DOMNode
-   */
-  updateFrame () {
+  renderFrame () {
     const DOMNode = (findDOMNode(this).contentDocument || findDOMNode(this).contentWindow.document)
     if (DOMNode.readyState === 'complete') {
       if (this.props.hasOwnProperty('children') && !this.props.hasOwnProperty('src')) {
@@ -39,21 +31,20 @@ export default class Frame extends Component {
           head.appendChild(tag)
         }
       })
-      if (!this.state.isLinked && this.props.hasOwnProperty('onLoad') && is.function(this.props.onLoad)) {
+      if (this.props.hasOwnProperty('onLoad')) {
         this.props.onLoad(DOMNode)
-        this.setState({ isLinked: !this.state.isLinked })
       }
     } else {
-      setTimeout(this.updateFrame.bind(this), 500)
+      setTimeout(this.renderFrame.bind(this), 500)
     }
   }
 
   componentDidMount () {
-    this.updateFrame()
+    this.renderFrame()
   }
 
   componentDidUpdate () {
-    this.updateFrame()
+    this.renderFrame()
   }
 
   componentWillUnmount () {
