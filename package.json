@@ -1,6 +1,6 @@
 {
   "name": "react-sandbox-frame",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "react component for create isolated view frames",
   "author": "Bruno Carvalho de Araujo <brunocarvalhodearaujo@gmail.com>",
   "license": "MIT",
