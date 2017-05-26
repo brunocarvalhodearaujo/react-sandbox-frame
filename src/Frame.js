@@ -21,6 +21,11 @@ export default class Frame extends Component {
         ref.href = url
         head.appendChild(ref)
       })
+      this.props.scripts.forEach(src => {
+        const ref = this.document.createElement('script')
+        ref.src = src
+        head.appendChild(ref)
+      })
       if (!is.undefined(this.props.dangerouslySetInnerHTML) && !is.undefined(this.props.dangerouslySetInnerHTML.__html)) {
         this.document.body.innerHTML = this.props.dangerouslySetInnerHTML.__html
       } else if (!is.undefined(this.props.children)) {
@@ -63,10 +68,12 @@ Frame.propTypes = {
   onLoad: PropTypes.func,
   src: PropTypes.string,
   title: PropTypes.string.isRequired,
-  stylesheets: PropTypes.arrayOf(PropTypes.string)
+  stylesheets: PropTypes.arrayOf(PropTypes.string),
+  scripts: PropTypes.arrayOf(PropTypes.string)
 }
 
 Frame.defaultProps = {
   title: 'webview-wrapper',
-  stylesheets: [ ]
+  stylesheets: [ ],
+  scripts: [ ]
 }
