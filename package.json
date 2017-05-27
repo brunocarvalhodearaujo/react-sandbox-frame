@@ -5,9 +5,17 @@
   "author": "Bruno Carvalho de Araujo <brunocarvalhodearaujo@gmail.com>",
   "license": "MIT",
   "main": "lib/index.js",
+  "keywords": [
+    "react",
+    "isolated",
+    "frame"
+  ],
   "repository": {
     "url": "https://github.com/brunocarvalhodearaujo/react-sandbox-frame.git",
     "type": "git"
+  },
+  "bugs": {
+    "url": "https://github.com/brunocarvalhodearaujo/react-sandbox-frame/issues"
   },
   "scripts": {
     "prepublish": "babel src --out-dir lib"
