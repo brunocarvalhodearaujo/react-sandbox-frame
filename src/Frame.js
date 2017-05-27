@@ -28,12 +28,17 @@ export default class Frame extends Component {
           head.appendChild(ref)
         }
       })
-      var $script = fs.readFileSync('./node_modules/scriptjs/dist/script.min.js', 'utf8')
-      const scriptElement = DOMNode.createElement('script')
-      scriptElement.type = 'text/javascript'
-      scriptElement.innerHTML = `${$script}; $script.order(${JSON.stringify(this.props.scripts)},'bundle')`
-      DOMNode.head.appendChild(scriptElement)
-      this.props.onLoad(DOMNode)
+      if (!head.querySelector(`script[of="${this.props.title}"]`) && this.props.scripts.length) {
+        var $script = fs.readFileSync('./node_modules/scriptjs/dist/script.min.js', 'utf8')
+        const scriptElement = DOMNode.createElement('script')
+        scriptElement.setAttribute('type', 'text/javascript')
+        scriptElement.setAttribute('of', this.props.title)
+        scriptElement.innerHTML = `${$script}; $script.order(${JSON.stringify(this.props.scripts)},'bundle')`
+        DOMNode.head.appendChild(scriptElement)
+      }
+      if (this.props.hasOwnProperty('onLoad')) {
+        this.props.onLoad(DOMNode)
+      }
     } else {
       setTimeout(this.renderFrame.bind(this), 500)
     }
