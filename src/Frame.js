@@ -25,7 +25,7 @@ export default class Frame extends Component {
           head.appendChild(ref)
         }
       })
-      $script(this.props.scripts, 'bundle', () => this.props.onLoad(DOMNode))
+      $script.order(this.props.scripts, 'bundle', () => this.props.onLoad(DOMNode))
     } else {
       setTimeout(this.renderFrame.bind(this), 500)
     }
