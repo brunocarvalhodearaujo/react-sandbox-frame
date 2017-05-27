@@ -3,12 +3,15 @@ import PropTypes from 'prop-types'
 import { findDOMNode, unmountComponentAtNode } from 'react-dom'
 import { renderToStaticMarkup } from 'react-dom/server'
 import is from 'is'
-import $script from 'scriptjs'
+import fs from 'fs'
 
 export default class Frame extends Component {
 
-  renderFrame () {
-    const DOMNode = (findDOMNode(this).contentDocument || findDOMNode(this).contentWindow.document)
+  /**
+   *
+   * @param {HTMLElement} DOMNode
+   */
+  renderFrame (DOMNode = (findDOMNode(this).contentDocument || findDOMNode(this).contentWindow.document)) {
     if (DOMNode.readyState === 'complete') {
       if (this.props.hasOwnProperty('children') && !this.props.hasOwnProperty('src')) {
         DOMNode.body.innerHTML = is.string(this.props.children)
@@ -25,7 +28,12 @@ export default class Frame extends Component {
           head.appendChild(ref)
         }
       })
-      $script.order(this.props.scripts, 'bundle', () => this.props.onLoad(DOMNode))
+      var $script = fs.readFileSync('./node_modules/scriptjs/dist/script.min.js', 'utf8')
+      const scriptElement = DOMNode.createElement('script')
+      scriptElement.type = 'text/javascript'
+      scriptElement.innerHTML = `${$script}; $script.order(${JSON.stringify(this.props.scripts)},'bundle')`
+      DOMNode.head.appendChild(scriptElement)
+      this.props.onLoad(DOMNode)
     } else {
       setTimeout(this.renderFrame.bind(this), 500)
     }
