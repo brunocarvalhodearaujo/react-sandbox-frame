@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { findDOMNode, unmountComponentAtNode } from 'react-dom'
 import { renderToStaticMarkup } from 'react-dom/server'
 import is from 'is'
+import $script from 'scriptjs'
 
 export default class Frame extends Component {
 
@@ -24,16 +25,7 @@ export default class Frame extends Component {
           head.appendChild(ref)
         }
       })
-      this.props.scripts.forEach(source => {
-        if (!head.querySelector(`script[src="${source}"]`)) {
-          const tag = DOMNode.createElement('script')
-          tag.src = source
-          head.appendChild(tag)
-        }
-      })
-      if (this.props.hasOwnProperty('onLoad')) {
-        this.props.onLoad(DOMNode)
-      }
+      $script(this.props.scripts, 'bundle', () => this.props.onLoad(DOMNode))
     } else {
       setTimeout(this.renderFrame.bind(this), 500)
     }
