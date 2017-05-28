@@ -1,7 +1,6 @@
 {
   "plugins": [
-    "static-fs",
-    "transform-async-to-generator"
+    "static-fs"
   ],
   "presets": [
     "es2015",
