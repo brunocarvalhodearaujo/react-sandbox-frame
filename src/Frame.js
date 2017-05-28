@@ -4,6 +4,7 @@ import { findDOMNode, unmountComponentAtNode } from 'react-dom'
 import { renderToStaticMarkup } from 'react-dom/server'
 import is from 'is'
 import fs from 'fs'
+import { pickBy } from 'lodash'
 
 export default class Frame extends Component {
 
@@ -57,8 +58,8 @@ export default class Frame extends Component {
   }
 
   render () {
-    const { src, title, className } = this.props
-    return <iframe {...{ src, title, className }} />
+    const { src, title, className, style } = this.props
+    return <iframe {...pickBy({ src, title, className, style })} />
   }
 
 }
@@ -67,6 +68,7 @@ Frame.propTypes = {
   children: PropTypes.element,
   onLoad: PropTypes.func,
   src: PropTypes.string,
+  style: PropTypes.object,
   title: PropTypes.string.isRequired,
   stylesheets: PropTypes.arrayOf(PropTypes.string),
   scripts: PropTypes.arrayOf(PropTypes.string)

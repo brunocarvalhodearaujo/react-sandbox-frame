@@ -37,6 +37,7 @@ The `Frame` component takes a couple of props that you can use to customize its 
   - `children [?element]`
   - `onLoad [?function]`
   - `src [?string]`
+  - `style [?object]`
   - `title [?string=page-wrapper]`
   - `stylesheets [?Array<String>=[]]`
   - `scripts [?Array<String>=[]]`
