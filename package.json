@@ -18,8 +18,7 @@
     "url": "https://github.com/brunocarvalhodearaujo/react-sandbox-frame/issues"
   },
   "scripts": {
-    "prepublish": "babel src --out-dir lib",
-    "start": "react-scripts start"
+    "prepublish": "babel src --out-dir lib"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
