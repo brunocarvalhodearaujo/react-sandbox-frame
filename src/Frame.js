@@ -4,7 +4,7 @@ import { findDOMNode, unmountComponentAtNode } from 'react-dom'
 import { renderToStaticMarkup } from 'react-dom/server'
 import is from 'is'
 import fs from 'fs'
-import _ from 'lodash'
+import { pickBy } from 'lodash'
 
 export default class Frame extends Component {
 
@@ -51,7 +51,7 @@ export default class Frame extends Component {
           head.appendChild(ref)
         }
       })
-      if (!head.querySelector(`script[of="${this.props.title}"]`)) {
+      if (Boolean(this.props.scripts.length) && !head.querySelector(`script[of="${this.props.title}"]`)) {
         const $script = fs.readFileSync('./node_modules/scriptjs/dist/script.min.js', 'utf8')
         const ref = DOMNode.createElement('script')
         ref.setAttribute('type', 'text/javascript')
@@ -78,9 +78,8 @@ export default class Frame extends Component {
   }
 
   render () {
-    const { src, title, className, style } = this.props
-    let props = _.pickBy({ src, title, className, style })
-    if (src) {
+    let props = pickBy(this.props)
+    if (!is.undefined(props.src)) {
       props.onLoad = this.renderFrame.bind(this)
     }
     return <iframe {...props} />
@@ -92,14 +91,11 @@ Frame.propTypes = {
   children: PropTypes.element,
   onLoad: PropTypes.func,
   src: PropTypes.string,
-  style: PropTypes.object,
-  title: PropTypes.string.isRequired,
   stylesheets: PropTypes.arrayOf(PropTypes.string).isRequired,
   scripts: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 
 Frame.defaultProps = {
-  title: 'frame-wrapper',
   scripts: [],
   stylesheets: []
 }
