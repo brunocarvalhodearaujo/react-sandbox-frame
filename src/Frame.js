@@ -4,7 +4,7 @@ import { findDOMNode, unmountComponentAtNode } from 'react-dom'
 import { renderToStaticMarkup } from 'react-dom/server'
 import is from 'is'
 import fs from 'fs'
-import { pickBy } from 'lodash'
+import { pickBy, omit } from 'lodash'
 
 export default class Frame extends Component {
 
@@ -78,7 +78,7 @@ export default class Frame extends Component {
   }
 
   render () {
-    let props = pickBy(this.props)
+    let props = pickBy(omit(this.props, [ 'stylesheets', 'scripts' ]))
     if (!is.undefined(props.src)) {
       props.onLoad = this.renderFrame.bind(this)
     }
