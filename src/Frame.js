@@ -69,10 +69,6 @@ export default class Frame extends Component {
     this.renderFrame()
   }
 
-  componentDidUpdate () {
-    this.renderFrame()
-  }
-
   componentWillUnmount () {
     unmountComponentAtNode(this)
   }
