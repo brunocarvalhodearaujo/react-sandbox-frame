@@ -78,7 +78,7 @@ export default class Frame extends Component {
     if (!is.undefined(props.src)) {
       props.onLoad = this.renderFrame.bind(this)
     }
-    return <iframe sandbox='allow-scripts' {...props} />
+    return <iframe {...props} />
   }
 
 }
