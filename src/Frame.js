@@ -4,9 +4,22 @@ import { findDOMNode, unmountComponentAtNode } from 'react-dom'
 import { renderToStaticMarkup } from 'react-dom/server'
 import is from 'is'
 import fs from 'fs'
-import { pickBy, omit } from 'lodash'
+import pickBy from 'lodash.pickBy'
+import omit from 'lodash.omit'
 
 export default class Frame extends Component {
+  static propTypes = {
+    children: PropTypes.element,
+    onLoad: PropTypes.func,
+    src: PropTypes.string,
+    stylesheets: PropTypes.arrayOf(PropTypes.string).isRequired,
+    scripts: PropTypes.arrayOf(PropTypes.string).isRequired
+  }
+
+  static defaultProps = {
+    scripts: [],
+    stylesheets: []
+  }
 
   /**
    * retrieve instance of iframe contents
@@ -18,7 +31,7 @@ export default class Frame extends Component {
 
   /**
    * check if frame is loaded
-   * @return {Promise}
+   * @return {Promise<boolean>}
    */
   isReady () {
     return new Promise((resolve, reject) => {
@@ -80,18 +93,4 @@ export default class Frame extends Component {
     }
     return <iframe {...props} />
   }
-
-}
-
-Frame.propTypes = {
-  children: PropTypes.element,
-  onLoad: PropTypes.func,
-  src: PropTypes.string,
-  stylesheets: PropTypes.arrayOf(PropTypes.string).isRequired,
-  scripts: PropTypes.arrayOf(PropTypes.string).isRequired
-}
-
-Frame.defaultProps = {
-  scripts: [],
-  stylesheets: []
 }
