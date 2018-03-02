@@ -5,7 +5,7 @@ React Sandbox Frame
 [![License](https://img.shields.io/npm/l/react-sandbox-frame.svg)](https://www.npmjs.com/package/react-sandbox-frame) 
 [![Dependency Status](https://david-dm.org/brunocarvalhodearaujo/react-sandbox-frame.svg?style=flat-square)](https://david-dm.org/brunocarvalhodearaujo/react-sandbox-frame)
 [![devDependency Status](https://david-dm.org/brunocarvalhodearaujo/react-sandbox-frame/dev-status.svg?style=flat-square)](https://david-dm.org/brunocarvalhodearaujo/react-sandbox-frame#info=devDependencies)
-[![npm](https://img.shields.io/npm/dt/react-sandbox-frame.svg)]()
+[![npm](https://img.shields.io/npm/dt/react-sandbox-frame.svg)](https://github.com/brunocarvalhodearaujo/react-sandbox-frame)
 
 this package create an customizable and declarative iframe
 
