@@ -4,11 +4,13 @@ interface Props {
   children?: React.ReactNode,
   onLoad?: () => void,
   src?: string,
-  stylesheets?: [],
-  scripts?: []
+  style?: React.CSSProperties,
+  title?: string,
+  stylesheets?: string[],
+  scripts?: string[]
 }
 
-declare class Initial extends React.Component<Props> {}
+declare class Frame extends React.Component<Props> {}
 
 export { Frame }
-export default Initial
+export default Frame
