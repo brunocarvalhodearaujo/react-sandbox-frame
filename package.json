@@ -5,6 +5,7 @@
   "author": "Bruno Carvalho de Araujo <brunocarvalhodearaujo@gmail.com>",
   "license": "MIT",
   "main": "lib/index.js",
+  "typings": "index.d.ts",
   "keywords": [
     "react",
     "isolated",
@@ -33,9 +34,9 @@
     "is": "^3.2.1",
     "lodash.omit": "^4.5.0",
     "lodash.pickby": "^4.6.0",
-    "prop-types": "^15.6.0",
-    "react": "^16.1.1",
-    "react-dom": "^16.1.1",
+    "prop-types": "^15.6.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "scriptjs": "^2.5.8"
   }
 }
