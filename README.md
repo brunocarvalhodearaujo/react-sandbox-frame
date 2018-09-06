@@ -6,6 +6,7 @@ React Sandbox Frame
 [![Dependency Status](https://david-dm.org/brunocarvalhodearaujo/react-sandbox-frame.svg?style=flat-square)](https://david-dm.org/brunocarvalhodearaujo/react-sandbox-frame)
 [![devDependency Status](https://david-dm.org/brunocarvalhodearaujo/react-sandbox-frame/dev-status.svg?style=flat-square)](https://david-dm.org/brunocarvalhodearaujo/react-sandbox-frame#info=devDependencies)
 [![npm](https://img.shields.io/npm/dt/react-sandbox-frame.svg)](https://github.com/brunocarvalhodearaujo/react-sandbox-frame)
+[![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=flat-square)](https://github.com/Flet/semistandard)
 
 this package create an customizable and declarative iframe
 
